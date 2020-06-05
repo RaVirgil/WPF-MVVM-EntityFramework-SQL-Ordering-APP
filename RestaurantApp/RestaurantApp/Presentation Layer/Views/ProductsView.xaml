@@ -1,0 +1,65 @@
+﻿<Window x:Class="RestaurantApp.Presentation_Layer.Views.ProductsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestaurantApp.Presentation_Layer.Views"
+        mc:Ignorable="d"
+        DataContext="{StaticResource ProductsViewModel}"
+        Title="ProductsView" Height="450" Width="800"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+    <Grid x:Name="HomeViewGrid" Background="#FFF3871B" >
+        <Grid x:Name="TopGrid" Margin="10,10,17,287">
+            <Button x:Name="btnLogin" Content="Login" Command="{Binding ToLoginCommand}" HorizontalAlignment="Left" Height="32" Margin="629,80,0,0" VerticalAlignment="Top" Width="119" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White" BorderBrush="{x:Null}"/>
+            <Button x:Name="btnMenus" Content="Menus" Command="{Binding ToMenusCommand}" HorizontalAlignment="Left" Height="32" Margin="485,80,0,0" VerticalAlignment="Top" Width="112" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White" BorderBrush="{x:Null}"/>
+            <Menu x:Name="menuCategories" HorizontalAlignment="Left" Height="23" Margin="6,10,0,0" VerticalAlignment="Top" Width="115" Grid.Column="1" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White">
+                <MenuItem Header="Categories" Height="23" Width="115" HorizontalAlignment="Center"  Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White" BorderBrush="{x:Null}">
+                    <MenuItem Header="All Products" Command="{Binding CategoryCommand}" CommandParameter="All Products" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Appetizers" Command="{Binding CategoryCommand}" CommandParameter="Appetizers" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Salads" Command="{Binding CategoryCommand}" CommandParameter="Salads" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Soup" Command="{Binding CategoryCommand}" CommandParameter="Soup" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Dessert" Command="{Binding CategoryCommand}" CommandParameter="Dessert" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Fish" Command="{Binding CategoryCommand}" CommandParameter="Fish" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Chicken" Command="{Binding CategoryCommand}" CommandParameter="Chicken" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Pork" Command="{Binding CategoryCommand}" CommandParameter="Pork" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Beef" Command="{Binding CategoryCommand}" CommandParameter="Beef" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Garniture" Command="{Binding CategoryCommand}" CommandParameter="Garniture" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                    <MenuItem Header="Beverages" Command="{Binding CategoryCommand}" CommandParameter="Beverages" Background="#FFBD5600" FontFamily="Khmer UI" FontSize="14.667" Foreground="White"/>
+                </MenuItem>
+            </Menu>
+            <Button x:Name="btnExit" Click="btnExit_Click" HorizontalAlignment="Right" Margin="0,-8,0,0" Width="53.47" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="47" VerticalAlignment="Top" d:LayoutOverrides="Height">
+                <Button.Background>
+                    <ImageBrush ImageSource="/RestaurantApp;component/ImageResources/exit-button.png"/>
+                </Button.Background>
+            </Button>
+            <TextBlock x:Name="txtSearchText" HorizontalAlignment="Left" Height="19.803" Margin="27,69.197,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="145" FontFamily="Khmer UI" FontSize="16" TextAlignment="Center" Foreground="White"/>
+
+            <TextBlock x:Name="txtUserName" HorizontalAlignment="Left" Margin="485,36,0,0" TextWrapping="Wrap" Text="{Binding User.FirstName}" FontFamily="Khmer UI" FontSize="16" Foreground="White" VerticalAlignment="Top" Height="21" Width="113"/>
+            <TextBlock x:Name="txtUsertext" HorizontalAlignment="Left" Margin="486,12,0,0" TextWrapping="Wrap" Text="User" FontSize="14" Foreground="White" FontFamily="Khmer UI" VerticalAlignment="Top" Height="21" Width="112"/>
+            <TextBox x:Name="txtSearch" Text="{Binding SearchText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  Height="23" Margin="27,89,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="145">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding EnterCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+
+            <Button x:Name="btnCart" Command="{Binding ToOrdersCommand}" HorizontalAlignment="Left" Margin="643,-8,0,0" VerticalAlignment="Top" Width="53" Height="47" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/RestaurantApp;component/ImageResources/cart-button.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+
+        <DataGrid x:Name="dgProducts" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="280" Margin="36,137,0,0" VerticalAlignment="Top" Width="558" Background="#FFF3871B" BorderBrush="{x:Null}" GridLinesVisibility="None" FontSize="21.333" RowBackground="#FFF0A051" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False" Foreground="Black" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"  FontSize="14.667" FontFamily="Khmer UI" Foreground="Black"/>
+                <DataGridTextColumn Header="Price (LEI)" Binding="{Binding Price}"  FontSize="14.667" FontFamily="Khmer UI"/>
+                <DataGridTextColumn Header="Quantity (g)" Binding="{Binding Quantity}" FontSize="14.667" FontFamily="Khmer UI"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Button x:Name="btnAddToCart" Content="Add to cart" Command="{Binding AddToCartCommand}" HorizontalAlignment="Left" Margin="633.587,229.789,0,0" VerticalAlignment="Top" Width="124.974" Height="69.513" Background="#FFBD5600" BorderBrush="{x:Null}" Foreground="White"/>
+
+    </Grid>
+</Window>

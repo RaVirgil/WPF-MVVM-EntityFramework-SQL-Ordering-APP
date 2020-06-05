@@ -1,0 +1,14 @@
+﻿<Application x:Class="RestaurantApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RestaurantApp"
+             xmlns:vm="clr-namespace:RestaurantApp.Logic_Layer.ViewModels"
+             StartupUri="Presentation Layer/Views/ProductsView.xaml">
+    <Application.Resources>
+        <vm:ProductsViewModel x:Key="ProductsViewModel"/>
+        <vm:LoginViewModel x:Key="LoginViewModel"/>
+        <vm:RegisterViewModel x:Key="RegisterViewModel"/>
+        <vm:MenusViewModel x:Key="MenusViewModel"/>
+        <vm:OrderViewModel x:Key="OrderViewModel"/>
+    </Application.Resources>
+</Application>

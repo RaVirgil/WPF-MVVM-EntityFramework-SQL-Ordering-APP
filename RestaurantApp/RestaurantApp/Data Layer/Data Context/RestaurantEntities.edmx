@@ -1,0 +1,802 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RestaurantModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="id_Menu" />
+          </Key>
+          <Property Name="id_Menu" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_MenuType" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuProductJoin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Menu" Type="int" Nullable="false" />
+          <Property Name="id_Product" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuType">
+          <Key>
+            <PropertyRef Name="id_MenuType" />
+          </Key>
+          <Property Name="id_MenuType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="id_Order" />
+          </Key>
+          <Property Name="id_Order" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Person" Type="int" Nullable="false" />
+          <Property Name="id_Product" Type="int" />
+          <Property Name="id_OrderType" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderType">
+          <Key>
+            <PropertyRef Name="id_OrderType" />
+          </Key>
+          <Property Name="id_OrderType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="id_Person" />
+          </Key>
+          <Property Name="id_Person" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_PersonType" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonType">
+          <Key>
+            <PropertyRef Name="id_PersonType" />
+          </Key>
+          <Property Name="id_PersonType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id_Product" />
+          </Key>
+          <Property Name="id_Product" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_ProductType" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="id_ProductType" />
+          </Key>
+          <Property Name="id_ProductType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Menu_MenuType">
+          <End Role="MenuType" Type="Self.MenuType" Multiplicity="1" />
+          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuType">
+              <PropertyRef Name="id_MenuType" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="id_MenuType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuProductJoin_MenuProductJoin">
+          <End Role="Menu" Type="Self.Menu" Multiplicity="1" />
+          <End Role="MenuProductJoin" Type="Self.MenuProductJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menu">
+              <PropertyRef Name="id_Menu" />
+            </Principal>
+            <Dependent Role="MenuProductJoin">
+              <PropertyRef Name="id_Menu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuProductJoin_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="MenuProductJoin" Type="Self.MenuProductJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_Product" />
+            </Principal>
+            <Dependent Role="MenuProductJoin">
+              <PropertyRef Name="id_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_OrderType">
+          <End Role="OrderType" Type="Self.OrderType" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderType">
+              <PropertyRef Name="id_OrderType" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="id_Person" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_Product" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonType">
+          <End Role="PersonType" Type="Self.PersonType" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonType">
+              <PropertyRef Name="id_PersonType" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="id_PersonType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductType">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="id_ProductType" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="id_ProductType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SpDeleteOrderByProductId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_product" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SpFindAllProductsInMenu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="menu_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SpFindMenuByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="category" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpFindMenuByName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpFindOrderByUserId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Person" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SpFindProductByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="category" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpFindProductByName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpFindUserByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpFindUserByEmailPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpInsertMenuOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Person" Type="int" Mode="In" />
+          <Parameter Name="id_Menu" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SpInsertProductOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Product" Type="int" Mode="In" />
+          <Parameter Name="id_Person" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SpInsertUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="first_name" Type="varchar" Mode="In" />
+          <Parameter Name="last_name" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+          <Parameter Name="phone" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SpSelectAllMenus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SpSelectAllProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SpUpdateOrderStatusByUserId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_id" Type="int" Mode="In" />
+          <Parameter Name="id_orderType" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="RestaurantModelStoreContainer">
+          <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuProductJoin" EntityType="Self.MenuProductJoin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuType" EntityType="Self.MenuType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderType" EntityType="Self.OrderType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonType" EntityType="Self.PersonType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Menu_MenuType" Association="Self.FK_Menu_MenuType">
+            <End Role="MenuType" EntitySet="MenuType" />
+            <End Role="Menu" EntitySet="Menu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuProductJoin_MenuProductJoin" Association="Self.FK_MenuProductJoin_MenuProductJoin">
+            <End Role="Menu" EntitySet="Menu" />
+            <End Role="MenuProductJoin" EntitySet="MenuProductJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuProductJoin_Product" Association="Self.FK_MenuProductJoin_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="MenuProductJoin" EntitySet="MenuProductJoin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_OrderType" Association="Self.FK_Order_OrderType">
+            <End Role="OrderType" EntitySet="OrderType" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Person" Association="Self.FK_Order_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Product" Association="Self.FK_Order_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+            <End Role="PersonType" EntitySet="PersonType" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductType" Association="Self.FK_Product_ProductType">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RestaurantModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="id_Menu" />
+          </Key>
+          <Property Name="id_Menu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_MenuType" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MenuType" Relationship="Self.FK_Menu_MenuType" FromRole="Menu" ToRole="MenuType" />
+          <NavigationProperty Name="MenuProductJoins" Relationship="Self.FK_MenuProductJoin_MenuProductJoin" FromRole="Menu" ToRole="MenuProductJoin" />
+        </EntityType>
+        <EntityType Name="MenuProductJoin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Menu" Type="Int32" Nullable="false" />
+          <Property Name="id_Product" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Menu" Relationship="Self.FK_MenuProductJoin_MenuProductJoin" FromRole="MenuProductJoin" ToRole="Menu" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_MenuProductJoin_Product" FromRole="MenuProductJoin" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="MenuType">
+          <Key>
+            <PropertyRef Name="id_MenuType" />
+          </Key>
+          <Property Name="id_MenuType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Menus" Relationship="Self.FK_Menu_MenuType" FromRole="MenuType" ToRole="Menu" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="id_Order" />
+          </Key>
+          <Property Name="id_Order" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Person" Type="Int32" Nullable="false" />
+          <Property Name="id_Product" Type="Int32" />
+          <Property Name="id_OrderType" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OrderType" Relationship="Self.FK_Order_OrderType" FromRole="Order" ToRole="OrderType" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Order_Person" FromRole="Order" ToRole="Person" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Order_Product" FromRole="Order" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="OrderType">
+          <Key>
+            <PropertyRef Name="id_OrderType" />
+          </Key>
+          <Property Name="id_OrderType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_OrderType" FromRole="OrderType" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="id_Person" />
+          </Key>
+          <Property Name="id_Person" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_PersonType" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Person" FromRole="Person" ToRole="Order" />
+          <NavigationProperty Name="PersonType" Relationship="Self.FK_Person_PersonType" FromRole="Person" ToRole="PersonType" />
+        </EntityType>
+        <EntityType Name="PersonType">
+          <Key>
+            <PropertyRef Name="id_PersonType" />
+          </Key>
+          <Property Name="id_PersonType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="People" Relationship="Self.FK_Person_PersonType" FromRole="PersonType" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id_Product" />
+          </Key>
+          <Property Name="id_Product" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_ProductType" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MenuProductJoins" Relationship="Self.FK_MenuProductJoin_Product" FromRole="Product" ToRole="MenuProductJoin" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Product" FromRole="Product" ToRole="Order" />
+          <NavigationProperty Name="ProductType" Relationship="Self.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="id_ProductType" />
+          </Key>
+          <Property Name="id_ProductType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Menu_MenuType">
+          <End Role="MenuType" Type="Self.MenuType" Multiplicity="1" />
+          <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuType">
+              <PropertyRef Name="id_MenuType" />
+            </Principal>
+            <Dependent Role="Menu">
+              <PropertyRef Name="id_MenuType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuProductJoin_MenuProductJoin">
+          <End Role="Menu" Type="Self.Menu" Multiplicity="1" />
+          <End Role="MenuProductJoin" Type="Self.MenuProductJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Menu">
+              <PropertyRef Name="id_Menu" />
+            </Principal>
+            <Dependent Role="MenuProductJoin">
+              <PropertyRef Name="id_Menu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuProductJoin_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="MenuProductJoin" Type="Self.MenuProductJoin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_Product" />
+            </Principal>
+            <Dependent Role="MenuProductJoin">
+              <PropertyRef Name="id_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_OrderType">
+          <End Role="OrderType" Type="Self.OrderType" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderType">
+              <PropertyRef Name="id_OrderType" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="id_Person" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="id_Product" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="id_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_PersonType">
+          <End Role="PersonType" Type="Self.PersonType" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonType">
+              <PropertyRef Name="id_PersonType" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="id_PersonType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductType">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="id_ProductType" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="id_ProductType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RestaurantEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Menus" EntityType="Self.Menu" />
+          <EntitySet Name="MenuProductJoins" EntityType="Self.MenuProductJoin" />
+          <EntitySet Name="MenuTypes" EntityType="Self.MenuType" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="OrderTypes" EntityType="Self.OrderType" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="PersonTypes" EntityType="Self.PersonType" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
+          <AssociationSet Name="FK_Menu_MenuType" Association="Self.FK_Menu_MenuType">
+            <End Role="MenuType" EntitySet="MenuTypes" />
+            <End Role="Menu" EntitySet="Menus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuProductJoin_MenuProductJoin" Association="Self.FK_MenuProductJoin_MenuProductJoin">
+            <End Role="Menu" EntitySet="Menus" />
+            <End Role="MenuProductJoin" EntitySet="MenuProductJoins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuProductJoin_Product" Association="Self.FK_MenuProductJoin_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="MenuProductJoin" EntitySet="MenuProductJoins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_OrderType" Association="Self.FK_Order_OrderType">
+            <End Role="OrderType" EntitySet="OrderTypes" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Person" Association="Self.FK_Order_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Product" Association="Self.FK_Order_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+            <End Role="PersonType" EntitySet="PersonTypes" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductType" Association="Self.FK_Product_ProductType">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <FunctionImport Name="SpFindAllProductsInMenu" EntitySet="MenuProductJoins" ReturnType="Collection(RestaurantModel.MenuProductJoin)">
+          <Parameter Name="menu_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindMenuByCategory" EntitySet="Menus" ReturnType="Collection(RestaurantModel.Menu)">
+          <Parameter Name="category" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindMenuByName" EntitySet="Menus" ReturnType="Collection(RestaurantModel.Menu)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindOrderByUserId" EntitySet="Orders" ReturnType="Collection(RestaurantModel.Order)">
+          <Parameter Name="id_Person" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindProductByCategory" EntitySet="Products" ReturnType="Collection(RestaurantModel.Product)">
+          <Parameter Name="category" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindProductByName" EntitySet="Products" ReturnType="Collection(RestaurantModel.Product)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindUserByEmail" EntitySet="People" ReturnType="Collection(RestaurantModel.Person)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpFindUserByEmailPassword" EntitySet="People" ReturnType="Collection(RestaurantModel.Person)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpInsertMenuOrder">
+            <Parameter Name="id_Person" Mode="In" Type="Int32" />
+            <Parameter Name="id_Menu" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpInsertProductOrder">
+            <Parameter Name="id_Product" Mode="In" Type="Int32" />
+            <Parameter Name="id_Person" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpInsertUser">
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SpSelectAllMenus" EntitySet="Menus" ReturnType="Collection(RestaurantModel.Menu)" />
+          <FunctionImport Name="SpSelectAllProducts" EntitySet="Products" ReturnType="Collection(RestaurantModel.Product)" />
+          <FunctionImport Name="SpDeleteOrderByProductId">
+          <Parameter Name="id_product" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SpUpdateOrderStatusByUserId">
+            <Parameter Name="user_id" Mode="In" Type="Int32" />
+            <Parameter Name="id_orderType" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SpFindAllProductsInMenu_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="id_Menu" Nullable="false" />
+          <Property Type="Int32" Name="id_Product" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindMenuByCategory_Result">
+          <Property Type="Int32" Name="id_Menu" Nullable="false" />
+          <Property Type="Int32" Name="id_MenuType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="Int32" Name="id_MenuType1" Nullable="false" />
+          <Property Type="String" Name="Category" Nullable="false" MaxLength="20" />
+          <Property Type="Double" Name="Quantity1" Nullable="false" />
+          <Property Type="Boolean" Name="Active1" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindMenuByName_Result">
+          <Property Type="Int32" Name="id_Menu" Nullable="false" />
+          <Property Type="Int32" Name="id_MenuType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindOrderByUserId_Result">
+          <Property Type="Int32" Name="id_Order" Nullable="false" />
+          <Property Type="Int32" Name="id_Person" Nullable="false" />
+          <Property Type="Int32" Name="id_Product" Nullable="true" />
+          <Property Type="Int32" Name="id_OrderType" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindProductByCategory_Result">
+          <Property Type="Int32" Name="id_Product" Nullable="false" />
+          <Property Type="Int32" Name="id_ProductType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="Int32" Name="id_ProductType1" Nullable="false" />
+          <Property Type="String" Name="Category" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="SpFindProductByName_Result">
+          <Property Type="Int32" Name="id_Product" Nullable="false" />
+          <Property Type="Int32" Name="id_ProductType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindUserByEmail_Result">
+          <Property Type="Int32" Name="id_Person" Nullable="false" />
+          <Property Type="Int32" Name="id_PersonType" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpFindUserByEmailPassword_Result">
+          <Property Type="Int32" Name="id_Person" Nullable="false" />
+          <Property Type="Int32" Name="id_PersonType" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpSelectAllMenus_Result">
+          <Property Type="Int32" Name="id_Menu" Nullable="false" />
+          <Property Type="Int32" Name="id_MenuType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SpSelectAllProducts_Result">
+          <Property Type="Int32" Name="id_Product" Nullable="false" />
+          <Property Type="Int32" Name="id_ProductType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Double" Name="Quantity" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RestaurantModelStoreContainer" CdmEntityContainer="RestaurantEntities">
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="RestaurantModel.Menu">
+              <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="id_Menu" ColumnName="id_Menu" />
+                <ScalarProperty Name="id_MenuType" ColumnName="id_MenuType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuProductJoins">
+            <EntityTypeMapping TypeName="RestaurantModel.MenuProductJoin">
+              <MappingFragment StoreEntitySet="MenuProductJoin">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_Menu" ColumnName="id_Menu" />
+                <ScalarProperty Name="id_Product" ColumnName="id_Product" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuTypes">
+            <EntityTypeMapping TypeName="RestaurantModel.MenuType">
+              <MappingFragment StoreEntitySet="MenuType">
+                <ScalarProperty Name="id_MenuType" ColumnName="id_MenuType" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="RestaurantModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="id_Order" ColumnName="id_Order" />
+                <ScalarProperty Name="id_Person" ColumnName="id_Person" />
+                <ScalarProperty Name="id_Product" ColumnName="id_Product" />
+                <ScalarProperty Name="id_OrderType" ColumnName="id_OrderType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderTypes">
+            <EntityTypeMapping TypeName="RestaurantModel.OrderType">
+              <MappingFragment StoreEntitySet="OrderType">
+                <ScalarProperty Name="id_OrderType" ColumnName="id_OrderType" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="RestaurantModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="id_Person" ColumnName="id_Person" />
+                <ScalarProperty Name="id_PersonType" ColumnName="id_PersonType" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonTypes">
+            <EntityTypeMapping TypeName="RestaurantModel.PersonType">
+              <MappingFragment StoreEntitySet="PersonType">
+                <ScalarProperty Name="id_PersonType" ColumnName="id_PersonType" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="RestaurantModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="id_Product" ColumnName="id_Product" />
+                <ScalarProperty Name="id_ProductType" ColumnName="id_ProductType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="RestaurantModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="id_ProductType" ColumnName="id_ProductType" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SpFindAllProductsInMenu" FunctionName="RestaurantModel.Store.SpFindAllProductsInMenu">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindMenuByCategory" FunctionName="RestaurantModel.Store.SpFindMenuByCategory">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindMenuByName" FunctionName="RestaurantModel.Store.SpFindMenuByName">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindOrderByUserId" FunctionName="RestaurantModel.Store.SpFindOrderByUserId">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindProductByCategory" FunctionName="RestaurantModel.Store.SpFindProductByCategory">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindProductByName" FunctionName="RestaurantModel.Store.SpFindProductByName">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindUserByEmail" FunctionName="RestaurantModel.Store.SpFindUserByEmail">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpFindUserByEmailPassword" FunctionName="RestaurantModel.Store.SpFindUserByEmailPassword">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpInsertMenuOrder" FunctionName="RestaurantModel.Store.SpInsertMenuOrder" />
+          <FunctionImportMapping FunctionImportName="SpInsertProductOrder" FunctionName="RestaurantModel.Store.SpInsertProductOrder" />
+          <FunctionImportMapping FunctionImportName="SpInsertUser" FunctionName="RestaurantModel.Store.SpInsertUser" />
+          <FunctionImportMapping FunctionImportName="SpSelectAllMenus" FunctionName="RestaurantModel.Store.SpSelectAllMenus">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpSelectAllProducts" FunctionName="RestaurantModel.Store.SpSelectAllProducts">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpDeleteOrderByProductId" FunctionName="RestaurantModel.Store.SpDeleteOrderByProductId" />
+          <FunctionImportMapping FunctionImportName="SpUpdateOrderStatusByUserId" FunctionName="RestaurantModel.Store.SpUpdateOrderStatusByUserId" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
